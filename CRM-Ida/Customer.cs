@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace CRM_Ida
@@ -8,7 +9,12 @@ namespace CRM_Ida
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Epost { get; set; }
-        public string PhoneNumber { get; set; }
+        public List<string> PhoneNumber { get; set; }
+
+        public Customer()
+        {
+            PhoneNumber = new List<string>();
+        }
 
         public Customer MakeCustomer()
         {
@@ -21,7 +27,9 @@ namespace CRM_Ida
             newCustomer.FirstName = help.ValidateInput(stringTypes.FirstName);
             newCustomer.LastName = help.ValidateInput(stringTypes.LastName);
             newCustomer.Epost = help.ValidateInput(stringTypes.Epost);
-            newCustomer.PhoneNumber = help.ValidateInput(stringTypes.PhoneNumber);
+
+
+            newCustomer.PhoneNumber.Add(help.ValidateInput(stringTypes.PhoneNumber));
             return newCustomer;
         }
 
@@ -48,7 +56,7 @@ namespace CRM_Ida
                     customer.Epost = help.ValidateInput(stringTypes.Epost);
                     break;
                 case "4":
-                    customer.PhoneNumber = help.ValidateInput(stringTypes.PhoneNumber);
+                    //customer.PhoneNumber = help.ValidateInput(stringTypes.PhoneNumber);
                     break;
             }
             return customer;

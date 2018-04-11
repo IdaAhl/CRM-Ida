@@ -65,7 +65,8 @@ namespace CRM_Ida
                     break;
                 case stringTypes.PhoneNumber:
                     //isValid = Validate(ValidatePhoneNo, stringToValidate);
-                    isValid = ValidatePhoneNo(stringToValidate);
+                    //isValid = ValidatePhoneNo(stringToValidate);
+                    isValid = true;
                     break;
                 default:
                     Console.WriteLine();
