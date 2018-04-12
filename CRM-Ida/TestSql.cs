@@ -12,8 +12,9 @@ namespace CRM_Ida
 
         public void ReadName()
         {
-            var sql = @"SELECT ID, FirstName, LastName
-                    FROM Customer";
+            var sql = @"SELECT Customer.ID, FirstName, LastName, Epost, Number As PhoneNumber
+FROM Customer
+LEFT JOIN PhoneNumber ON Customer.ID = PhoneNumber.CustomerID ";
 
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
@@ -23,26 +24,38 @@ namespace CRM_Ida
 
                 while (reader.Read())
                 {
-                    var firstName = reader.GetString(1);
-                    var lastName = reader.GetString(2);
                     var ID = reader.GetInt32(0);
-                    System.Console.WriteLine($"Kund: {ID} {firstName} {lastName}");
+
+                    var firstName = reader.GetSqlString(1);
+                    if (!firstName.IsNull)
+                        firstName = reader.GetString(1);
+
+                    var lastName = reader.GetSqlString(2);
+                    if (!lastName.IsNull)
+                        lastName = reader.GetString(2);
+
+                    var epost = reader.GetSqlString(3);
+                    if (!epost.IsNull)
+                        epost = reader.GetString(3);
+
+                    var phoneNumber = reader.GetSqlString(4);
+                    if (!phoneNumber.IsNull)
+                        phoneNumber = reader.GetString(4);
+
+                    System.Console.WriteLine($"Kund: {ID} {firstName} {lastName} {epost} {phoneNumber}");
                 };
 
             }
-
             Console.ReadLine();
         }
 
         public Customer MakeCustomerFromId(int id)
         {
             var sql = $@"SELECT FirstName, LastName, Epost, Number AS PhoneNumber FROM Customer 
-INNER JOIN PhoneNumber ON Customer.ID = PhoneNumber.CustomerID
+LEFT JOIN PhoneNumber ON Customer.ID = PhoneNumber.CustomerID
 WHERE Customer.ID = '{id}'";
 
-
             var customer = new Customer();
-
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
@@ -51,24 +64,45 @@ WHERE Customer.ID = '{id}'";
 
                 while (reader.Read())
                 {
-                    customer.FirstName = reader.GetString(0);
-                    customer.LastName = reader.GetString(1);
+                    var firstName = reader.GetSqlString(0);
+                    customer.FirstName = !firstName.IsNull ? reader.GetString(0) : " ";
+                    //om firstname är null så sparas " ". Är detta smart. 
 
-                    //var x = reader.GetSqlString(2);
-                    //x.IsNull
-                    customer.Epost = reader.GetString(2);
-                    customer.PhoneNumber.Add(reader.GetString(3));
+                    var lastName = reader.GetSqlString(1);
+                    customer.LastName = !lastName.IsNull ? reader.GetString(1) : " ";
+
+                    var epost = reader.GetSqlString(2);
+                    customer.Epost = !epost.IsNull ? reader.GetString(2) : " ";
+
+                    var phoneNumber = reader.GetSqlString(3);
+                    if (!phoneNumber.IsNull)
+                        customer.PhoneNumber.Add(reader.GetString(3));
                 }
             }
             return customer;
         }
 
+        public void DeletePhoneNumber(Customer customer, int id)
+        {
+            var sql = $@"DELETE FROM PhoneNumber WHERE CustomerID = @id";
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+                command.Parameters.Add(new SqlParameter("ID", id));
+                command.ExecuteNonQuery();
+            }
 
+
+
+
+
+            
+        }
 
         public void UpdateCustomerToDatabase(Customer customer, int id)
         {
-
-            var sql = $@"UPDATE Customer SET FirstName = @FirstName, LastName = @LastName, Epost = @Epost, PhoneNumber = @PhoneNumber  WHERE ID = @id ";
+            var sql = $@"UPDATE Customer SET FirstName = @FirstName, LastName = @LastName, Epost = @Epost WHERE ID = @id ";
 
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
@@ -77,16 +111,21 @@ WHERE Customer.ID = '{id}'";
                 command.Parameters.Add(new SqlParameter("FirstName", customer.FirstName));
                 command.Parameters.Add(new SqlParameter("LastName", customer.LastName));
                 command.Parameters.Add(new SqlParameter("Epost", customer.Epost));
-                command.Parameters.Add(new SqlParameter("PhoneNumber", customer.PhoneNumber));
                 command.Parameters.Add(new SqlParameter("ID", id));
                 command.ExecuteNonQuery();
             }
 
+
+
         }
 
+        
 
-        public void InstertCustomerToDatabase(Customer customer)
+
+
+        public int InstertCustomerToDatabase(Customer customer)
         {
+            var customerId = 0;
             var sql = @"INSERT INTO Customer(FirstName, LastName, Epost) 
 OUTPUT INSERTED.ID
 VALUES (@FirstName, @LastName, @Epost)";
@@ -97,11 +136,10 @@ VALUES (@FirstName, @LastName, @Epost)";
                 command.Parameters.Add(new SqlParameter("FirstName", customer.FirstName));
                 command.Parameters.Add(new SqlParameter("LastName", customer.LastName));
                 command.Parameters.Add(new SqlParameter("Epost", customer.Epost));
-                var customerID = (int)command.ExecuteScalar();
+                //epost är null
+                customerId = (int)command.ExecuteScalar();
             }
-
-
-
+            return customerId;
         }
 
         public void InsertCustomerPhoneNumberToDatabase(Customer customer, Int32 customerId)
@@ -111,39 +149,20 @@ VALUES (@FirstName, @LastName, @Epost)";
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
-                connection.Open();
+                
+                
+
                 for (int i = 0; i < customer.PhoneNumber.Count; i++)
                 {
+                    connection.Open();
                     command.Parameters.Add(new SqlParameter("Number", customer.PhoneNumber[i]));
                     command.Parameters.Add(new SqlParameter("CustomerID", customerId));
+
                     command.ExecuteNonQuery();
 
                 }
                 
             }
-
-        }
-
-
-        public int GetCustomerID(Customer customer)
-        {
-            var sql = $@"SELECT ID FROM Customer WHERE Customer.FirstName = '{customer.FirstName}' AND '{customer.LastName}' ";
-
-            var customerId = 0;
-
-            using (SqlConnection connection = new SqlConnection(conString))
-            using (SqlCommand command = new SqlCommand(sql, connection))
-            {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    customerId = reader.GetInt32(0);
-         
-                }
-            }
-            return customerId;
 
         }
 

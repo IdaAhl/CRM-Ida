@@ -19,47 +19,61 @@ namespace CRM_Ida
         public Customer MakeCustomer()
         {
             Customer newCustomer = new Customer();
-            Validate help = new Validate();
+            Validate validate = new Validate();
 
             Console.Clear();
             Console.WriteLine("Skapa en ny kund");
 
-            newCustomer.FirstName = help.ValidateInput(stringTypes.FirstName);
-            newCustomer.LastName = help.ValidateInput(stringTypes.LastName);
-            newCustomer.Epost = help.ValidateInput(stringTypes.Epost);
-
-
-            newCustomer.PhoneNumber.Add(help.ValidateInput(stringTypes.PhoneNumber));
+            newCustomer.FirstName = validate.InputFromUser(stringTypes.FirstName);
+            newCustomer.LastName = validate.InputFromUser(stringTypes.LastName);
+            newCustomer.Epost = validate.InputFromUser(stringTypes.Epost);
+            newCustomer.PhoneNumber.Add(validate.InputFromUser(stringTypes.PhoneNumber));
             return newCustomer;
         }
 
         public Customer ChangeCustomer(Customer customer)
         {
-            Console.Write(@"Vad vill du ändra?
-1 Förnamn
-2 Efternamn
-3 Epost
-4 telefonnummer?");
+            Console.Write(@"Vad vill du ändra? 1 Förnamn, 2 Efternamn, 3 Epost, 4 Telefonnummer?");
 
             var inputChange = Console.ReadLine();
-            Validate help = new Validate();
+            Validate validate = new Validate();
 
             switch (inputChange)
             {
                 case "1":
-                    customer.FirstName = help.ValidateInput(stringTypes.FirstName);
+                    customer.FirstName = validate.InputFromUser(stringTypes.FirstName);
                     break;
                 case "2":
-                    customer.LastName = help.ValidateInput(stringTypes.LastName);
+                    customer.LastName = validate.InputFromUser(stringTypes.LastName);
                     break;
                 case "3":
-                    customer.Epost = help.ValidateInput(stringTypes.Epost);
+                    customer.Epost = validate.InputFromUser(stringTypes.Epost);
                     break;
                 case "4":
-                    //customer.PhoneNumber = help.ValidateInput(stringTypes.PhoneNumber);
+                    customer.ChangePhoneNumber(customer);
                     break;
             }
             return customer;
+        }
+
+        public void ChangePhoneNumber(Customer customer)
+        {
+            Validate validate = new Validate();
+
+            if (customer.PhoneNumber.Count == 0)
+                customer.PhoneNumber.Add(validate.InputFromUser(stringTypes.PhoneNumber));
+            else
+            {
+                for (int i = 0; i < customer.PhoneNumber.Count; i++)
+                {
+                    Console.WriteLine($"Vilket telefonnummer vill du ändra {i + 1}: {customer.PhoneNumber[i]}");
+                }
+                var numberToChange = Convert.ToInt32(Console.ReadLine());
+                customer.PhoneNumber[numberToChange - 1] = validate.InputFromUser(stringTypes.PhoneNumber);
+            }
+
+            
+
         }
 
     }

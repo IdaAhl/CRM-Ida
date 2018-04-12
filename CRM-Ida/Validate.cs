@@ -8,7 +8,7 @@ namespace CRM_Ida
 {
     public class Validate
     {
-        public string ValidateInput(stringTypes stringTypes)
+        public string InputFromUser(stringTypes stringTypes)
         {
             string fromUser;
             while (true)
@@ -56,16 +56,13 @@ namespace CRM_Ida
             {
                 case stringTypes.FirstName:
                 case stringTypes.LastName:
-                    // isValid = Validate(ValidateWord, stringToValidate);
+                    
                     isValid = ValidateWord(stringToValidate);
                     break;
                 case stringTypes.Epost:
                     isValid = ValidateEmail(stringToValidate);
-                    // isValid = Validate(ValidateEmail, stringToValidate);
                     break;
                 case stringTypes.PhoneNumber:
-                    //isValid = Validate(ValidatePhoneNo, stringToValidate);
-                    //isValid = ValidatePhoneNo(stringToValidate);
                     isValid = true;
                     break;
                 default:
