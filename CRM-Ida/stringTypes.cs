@@ -2,6 +2,6 @@
 {
     public enum stringTypes
     {
-        FirstName, LastName, Epost, PhoneNumber
+        FirstName, LastName, Epost, PhoneNumber, ProductName
     }
 }

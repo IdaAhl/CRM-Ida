@@ -16,7 +16,7 @@ namespace CRM_Ida
             while (true)
             {
                 Console.Clear();
-                Console.Write(@"Välkomen till IddDayDreamSystemAdvanceCareCustomerSupport
+                Console.Write(@"IddDayDreamSystemAdvanceCareCustomerSupport
 
 Vad vill du göra? 
 1) Titta till kunderna?
@@ -27,6 +27,10 @@ Vad vill du göra?
                 {
                     case "1":
                         _customerMenu.ShowCustomerMenu();
+                        break;
+                    case "2":
+                        var productMenu = new PruductMenu();
+                        productMenu.ShowProductMenu();
                         break;
                     default:
                         break;

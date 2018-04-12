@@ -10,10 +10,12 @@ namespace CRM_Ida
         public string LastName { get; set; }
         public string Epost { get; set; }
         public List<string> PhoneNumber { get; set; }
+        public List<Product> FavoriteProducts { get; set; }
 
         public Customer()
         {
             PhoneNumber = new List<string>();
+            FavoriteProducts = new List<Product>();
         }
 
         public Customer MakeCustomer()

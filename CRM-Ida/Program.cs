@@ -9,11 +9,6 @@ namespace CRM_Ida
         static void Main(string[] args)
         {
             new App().Run();
-
-
-               
-
-
         }
     }
 }

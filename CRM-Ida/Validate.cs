@@ -41,6 +41,9 @@ namespace CRM_Ida
                 case stringTypes.PhoneNumber:
                     Console.Write("Telefonnummer: ");
                     break;
+                case stringTypes.ProductName:
+                    Console.Write("Namn: ");
+                    break;
                 default:
                     Console.WriteLine();
                     break;
@@ -56,7 +59,7 @@ namespace CRM_Ida
             {
                 case stringTypes.FirstName:
                 case stringTypes.LastName:
-                    
+                case stringTypes.ProductName:
                     isValid = ValidateWord(stringToValidate);
                     break;
                 case stringTypes.Epost:
