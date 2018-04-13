@@ -15,7 +15,6 @@ namespace CRM_Ida
             {
                 Console.Clear();
                 Console.Write(@"Kundregistret!
-
 Vad vill du göra?
 1) Skapa en ny kund
 2) Ändra en kund
@@ -59,7 +58,6 @@ Vad vill du göra?
                     default:
                         quitMenu = false;
                         break;
-
                 }
 
             }

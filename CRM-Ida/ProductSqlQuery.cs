@@ -9,8 +9,6 @@ namespace CRM_Ida
     {
         private string conString = @"Server = (localdb)\mssqllocaldb; Database = CRM-Ida; Trusted_Connection = True";
 
-
-
         public int InstertProductIntoDatabase(Product product)
         {
             var customerId = 0;
@@ -48,7 +46,6 @@ WHERE Product.ID = '{id}'";
             }
             return product;
         }
-
 
         public void UpdateProductIntoDatabase(Product product, int id)
         {
@@ -132,9 +129,7 @@ INNER JOIN Product ON FavoriteProducts.ProductID = Product.ID";
                     if (!name.IsNull)
                         name = reader.GetString(3);
 
-
-
-                    System.Console.WriteLine($"Customer: {customerId}, {firstName} Favoriteprodukt {productId} {name} ");
+                    System.Console.WriteLine($"Kund: {customerId}, {firstName} Favoritprodukt {productId} {name} ");
                 };
             }
 

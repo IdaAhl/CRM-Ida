@@ -73,10 +73,6 @@ namespace CRM_Ida
                 var numberToChange = Convert.ToInt32(Console.ReadLine());
                 customer.PhoneNumber[numberToChange - 1] = validate.InputFromUser(stringTypes.PhoneNumber);
             }
-
-            
-
         }
-
     }
 }

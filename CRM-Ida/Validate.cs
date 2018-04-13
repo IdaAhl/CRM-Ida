@@ -66,7 +66,7 @@ namespace CRM_Ida
                     isValid = ValidateEmail(stringToValidate);
                     break;
                 case stringTypes.PhoneNumber:
-                    isValid = true;
+                    isValid = ValidatePhoneNo(stringToValidate);
                     break;
                 default:
                     Console.WriteLine();
@@ -88,12 +88,10 @@ namespace CRM_Ida
         {
             return Regex.IsMatch(input, @"^\d{2,10}-?\d{1,8}$");
         }
-
         public bool ValidateEmail(string input)
         {
             return Regex.IsMatch(input, @"^\w+(\.\w+)*@\w+(\.\w+)*\.\w{2,10}$");
         }
-
         public bool ValidateWord(string input)
         {
             return Regex.IsMatch(input, @"^[a-zA-ZåäöÅÄÖ]+$");

@@ -7,7 +7,7 @@ namespace CRM_Ida
     public class Product
     {
         public string Name { get; set; }
-        public int sqlProductID { get; set; }
+        public int SqlProductId { get; set; }
 
         public Product MakeProduct()
         {
@@ -23,7 +23,6 @@ namespace CRM_Ida
         public Product ChangeProduct(Product product)
         {
             Console.Write(@"Vad vill du ändra? 1 Namn , etc?");
-
             var inputChange = Console.ReadLine();
             Validate validate = new Validate();
 
@@ -32,7 +31,6 @@ namespace CRM_Ida
                 case "1":
                     product.Name = validate.InputFromUser(stringTypes.ProductName);
                     break;
-                    
             }
             return product;
         }

@@ -68,18 +68,11 @@ Vad vill du göra?
                         productSqlQuery.CustomerFavoriteProductList();
                         Console.ReadLine();
                         break;
-
                     default:
                         quitMenu = false;
                         break;
                 }
-
-
-
             }
-
         }
-
-
     }
 }

@@ -118,11 +118,7 @@ WHERE Customer.ID = '{id}'";
 
 
         }
-
         
-
-
-
         public int InstertCustomerToDatabase(Customer customer)
         {
             var customerId = 0;
@@ -165,7 +161,6 @@ VALUES (@FirstName, @LastName, @Epost)";
             }
 
         }
-
         public void DeleteCustomerFormDatabase(int id)
         {
             var sql = $@"DELETE FROM Customer WHERE ID = @id";
@@ -178,8 +173,5 @@ VALUES (@FirstName, @LastName, @Epost)";
             }
 
         }
-
-
-
     }
 }
