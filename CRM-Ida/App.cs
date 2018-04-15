@@ -22,7 +22,6 @@ Vad vill du göra?
 1) Titta till kunderna?
 2) Ändra i produkter?");
                 var choise = Console.ReadLine();
-
                 switch (choise)
                 {
                     case "1":

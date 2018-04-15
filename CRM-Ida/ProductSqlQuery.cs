@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace CRM_Ida
@@ -107,13 +108,16 @@ WHERE Product.ID = '{id}'";
             var sql = @"SELECT Customer.ID, FirstName, Product.ID, Name AS ProduktName 
 FROM Customer
 INNER JOIN FavoriteProducts ON Customer.ID = FavoriteProducts.CustomerID
-INNER JOIN Product ON FavoriteProducts.ProductID = Product.ID";
+INNER JOIN Product ON FavoriteProducts.ProductID = Product.ID
+ORDER BY Customer.ID";
 
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
+
+                Console.WriteLine(@"Kund, Favoritprodukt");
 
                 while (reader.Read())
                 {
@@ -129,8 +133,22 @@ INNER JOIN Product ON FavoriteProducts.ProductID = Product.ID";
                     if (!name.IsNull)
                         name = reader.GetString(3);
 
-                    System.Console.WriteLine($"Kund: {customerId}, {firstName} Favoritprodukt {productId} {name} ");
+                    System.Console.WriteLine($"{customerId} {firstName}, {productId} {name} ");
                 };
+            }
+
+        }
+
+        public void DeleteFavoriteProductFrom(int customerId, int productId)
+        {
+            var sql = $@"DELETE FROM FavoriteProducts WHERE ProductID = {productId} AND CustomerID = {customerId}";
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+                //command.Parameters.Add(new SqlParameter("CustomerID", customerId));
+                //command.Parameters.Add(new SqlParameter("ProductID", productId));
+                command.ExecuteNonQuery();
             }
 
         }

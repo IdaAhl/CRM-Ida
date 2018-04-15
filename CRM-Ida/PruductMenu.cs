@@ -24,6 +24,7 @@ Vad vill du göra?
 4) Visa alla produkter i en lista
 5) Lägga till en favoritkoppling mellan kund och produkt
 6) Visa kunder och deras favoritprodukter
+7) Ta bort en favoritkoppling mellan kund och produkt
 ++) Gå tillbaka till huvudmenyn
 ");
                 var choise = Console.ReadLine();
@@ -68,6 +69,20 @@ Vad vill du göra?
                         productSqlQuery.CustomerFavoriteProductList();
                         Console.ReadLine();
                         break;
+
+                    case "7":
+                        productSqlQuery.CustomerFavoriteProductList();
+                        Console.Write("Från vilken kund ska vi ta bort en favorit?");
+                        var changeCustomer = Int32.Parse(Console.ReadLine());
+                        Console.Write("Vilken produkt ska vi ta bort?");
+                        var changeProduct = Int32.Parse(Console.ReadLine());
+                        productSqlQuery.DeleteFavoriteProductFrom(changeCustomer, changeProduct);
+                        Console.ReadLine();
+
+
+
+                        break;
+
                     default:
                         quitMenu = false;
                         break;

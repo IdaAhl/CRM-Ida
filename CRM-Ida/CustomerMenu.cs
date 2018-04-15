@@ -18,9 +18,10 @@ namespace CRM_Ida
 Vad vill du göra?
 1) Skapa en ny kund
 2) Ändra en kund
-3) Ta bort en kund 
-4) Hämta alla kunder
-5) Gå tillbaka till huvudmenyn
+3) Lägg till fler telefonnummer
+4) Ta bort en kund 
+5) Hämta alla kunder
+++) Gå tillbaka till huvudmenyn
 ");
                 var choise = Console.ReadLine();
 
@@ -46,12 +47,33 @@ Vad vill du göra?
 
                     case "3":
                         test.ReadName();
+                        Console.Write("Till vilken kund vill du lägga till telefonnummer?");
+                        var customerPhonenumber = Int32.Parse(Console.ReadLine());
+
+                        List<PhoneNumber> phoneNumbers = new List<PhoneNumber>();
+
+                        while (true)
+                        {
+                            PhoneNumber phoneNumber = new PhoneNumber();
+                            var newPhoneNumber = phoneNumber.MakePhoneNumber();
+                            phoneNumbers.Add(newPhoneNumber);
+
+                            Console.WriteLine("Vill du lägga till ett nummer till Y/N");
+                            if (Console.ReadLine() == "N")
+                                break;
+                        }
+                        test.InsertCustomerPhoneNumberToDatabaseFromList(phoneNumbers, customerPhonenumber);
+
+                        break;
+
+                    case "4":
+                        test.ReadName();
                         Console.Write("Vilken kund vill du ta bort?");
                         var inputC = Int32.Parse(Console.ReadLine());
                         test.DeleteCustomerFormDatabase(inputC);
                         break;
 
-                    case "4":
+                    case "5":
                         Console.Clear();
                         test.ReadName();
                         break;

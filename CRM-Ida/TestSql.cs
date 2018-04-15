@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 
@@ -145,9 +146,6 @@ VALUES (@FirstName, @LastName, @Epost)";
             using (SqlConnection connection = new SqlConnection(conString))
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
-                
-                
-
                 for (int i = 0; i < customer.PhoneNumber.Count; i++)
                 {
                     connection.Open();
@@ -161,6 +159,31 @@ VALUES (@FirstName, @LastName, @Epost)";
             }
 
         }
+
+        public void InsertCustomerPhoneNumberToDatabaseFromList(List<PhoneNumber> phoneNumber, Int32 customerId)
+        {
+            var sql = @"INSERT INTO PhoneNumber(Number, CustomerID) VALUES (@Number, @CustomerID)";
+
+            using (SqlConnection connection = new SqlConnection(conString))
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                connection.Open();
+                for (int i = 0; i < phoneNumber.Count; i++)
+                {
+                    
+                    command.Parameters.Add(new SqlParameter("Number", phoneNumber[i].Name));
+                    command.Parameters.Add(new SqlParameter("CustomerID", customerId));
+                    command.ExecuteNonQuery();
+                    command.Parameters.Clear();
+
+                }
+            }
+
+        }
+
+
+
+
         public void DeleteCustomerFormDatabase(int id)
         {
             var sql = $@"DELETE FROM Customer WHERE ID = @id";
